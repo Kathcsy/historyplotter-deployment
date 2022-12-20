@@ -1,0 +1,254 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>History Plotter | Project Dashboard</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand text-black" href="{% url 'LandingPage' %}">History Plotter</a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link text-black" href="{% url 'About' %}">About</a></li>
+                        <li class="nav-item"><a class="nav-link text-black" href="{% url 'LandingPage' %}#contact">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link text-black" href="{% url 'ProjectDashboard' %}">Projects</a></li>
+                        {% if user.username %}
+                        <!--IF NAKA LOGIN -->
+                        <!-- dropend dropup dropstart dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-black"  href="" data-bs-toggle="dropdown">Project Content</a> 
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item text-black" href="{% url 'materials' %}">Write</a>
+                                <a class="dropdown-item text-black" href="{% url 'ideaNest' %}">Nest</a>
+                                <a class="dropdown-item text-black" href="{% url 'CreateQuiz' %}">Quiz</a>
+                                <a class="dropdown-item text-black" href="{% url 'Relations' %}">Relations</a>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link text-black" href="">{{user.username}}</a></li> 
+                        <form action="" method="POST">
+                        {% csrf_token %}
+                        <!-- BUTTON FOR THE CONFIRMATION OF LOGGING OUT (basta log out) PS. Add logout Modal -->
+                       <li class="nav-item"><a class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" href="{% url 'Signup' %}">Log out</a></li>
+                       <!--IF DILI NAKA LOGIN -->
+                        {% else %}
+                       <li class="nav-item"><a class="btn btn-primary mt-2" href="{% url 'Signup' %}">Sign Up</a></li>
+                        {% endif %}
+                        </form>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!--LOGOUT MODAL-->
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Logout</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <p>Are you sure you want to end the session?</p>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" name="btnLogout">Yes</button>
+                    </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!--END MODAL-->
+        <!-- Project Dashboard-->
+        <section class="projects-section bg-light" id="projects">
+            <div class="container px-4 px-lg-5">
+                <!-- Featured Project Row-->
+                <div class="row gx-0 mb-4 mb-lg-5 align-items-center">
+                    <div class="col-xl-8 col-lg-7">
+                        <div class="text-left text-lg-left">
+                            {% for p in project %}
+                            <h1>In Project | {{p.title}}</h1>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- <div class="col-xl-4 col-lg-5">
+                        <div class="featured-text text-center text-lg-left">
+                            <button type="button" id="btnAdd" class="btn btn-info mt-2" data-bs-target="#btnProjAdd" data-bs-toggle="modal">Add Project</button>
+                        </div>
+                    </div> -->
+                </div>
+                <!-- LIST OF PROJECTS START HERE -->
+                <!-- Project One Row-->
+                <div class="row gx-0 mb-5 mb-lg-0 justify-content-center">
+                    {% for p in project %}
+                    <div class="col-lg-6">
+                        <!-- cycle tag helps cycling whatever is on '' -->
+                        <div class="{% cycle 'bg-dark' 'bg-black' 'bg-black' 'bg-dark'  %} text-center h-100 project">
+                            <div class="d-flex h-100">
+                                <div class="project-text w-100 my-auto text-center text-lg-left">
+                                    <input type="text" name="myID" value ="{{p.id}}" hidden>
+                                    <form method="POST">
+                                        <h4 class="text-white"><a href="{% url 'ProjectDashboard' %}">{{p.title}}</a></h4>
+                                    </form>
+                                    <br>
+                                    <h6 class="mb-0 text-white-50">{{p.description}}</h6>
+                                    <br>
+                                    <!-- <button class="btn-success" id="btnEdit" data-bs-target="#editProject-{{p.id}}" data-bs-toggle="modal">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn-danger" id="btnDelete" data-bs-target="#deleteProject-{{p.id}}" data-bs-toggle="modal">
+                                        <i class="fa-solid fa-trash-can"></i> -->
+                                    </button>
+                                    <!--<hr class="d-none d-lg-block mb-0 ms-0" />-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-6"><img class="img-fluid w-100" src="{% static 'assets/img/paint3.jpg' %}" alt="..." /></div>-->
+                    <!-- MODAL DELETE -->
+                    <!-- <div id="deleteProject-{{p.id}}" class="modal fade" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">DELETE PROJECT</h5>
+                                    <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <h6 class="text-md-center">Are you sure you want to delete this project?</h6>
+                                        <div class="form-group">
+                                            <label for="projectTitle" class="form-label">Project Title</label>
+                                            <input type="text" class="form-control" id="projectTitle" style="margin-bottom: 2%;" value="{{p.title}}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="projectDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" id="projectDescription" rows="5" readonly>{{p.description}}
+                                            </textarea>
+                                        </div>
+                                        <input type="text" name="myID" value ="{{p.id}}" hidden>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="btnProjDelete">Confirm</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- MODAL EDIT -->
+                    <!-- <div id="editProject-{{p.id}}" class="modal fade" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">PROJECT EDIT</h5>
+                                    <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label for="projectTitle" class="form-label">Project Title</label>
+                                            <input type="text" class="form-control" id="projectTitle" style="margin-bottom: 2%;" name="title" value="{{p.title}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="projectDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" id="projectDescription" rows="5" name="description">{{p.description}}
+                                            </textarea>
+                                        </div>
+                                        <input type="text" name="myID" value ="{{p.id}}" hidden>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="btnProjEdit">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div> -->
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- MODAL ADD -->
+        <!-- <div id="btnProjAdd" class="modal fade" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">CREATE PROJECT</h5>
+                        <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="#" method="POST">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            <input id="project_id" type="text" name="p_id" value= "{{p.id}}" hidden>
+                            <div class="form-group">
+                                <label for="projectTitle" class="form-label">Project Title</label>
+                                <input type="text" class="form-control" id="projectTitle" style="margin-bottom: 2%;" name="title">
+                            </div>
+                            <div class="form-group">
+                                <label for="projectDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="projectDescription" rows="5" name="description"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="btnProjCreate">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+        <!-- Footer-->
+        <footer class="footer bg-black small text-center text-white-50"><div class="container px-4 px-lg-5">Copyright &copy; Team Write Minded 2022</div></footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'js/scripts.js' %}"></script>
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <!-- * *                               SB Forms JS                               * *-->
+        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <!--<script>
+            var modal = document.getElementById("modalAdd"); //get modal
+            var btn = document.getElementById("btnAdd"); //get btn
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+            btn.onclick = function(){ //modal clicked
+                modal.style.display = "block";
+            }
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        </script>-->
+    </body>
+</html>
