@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'HistoryPlotter'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1ECA7286C4CC43E5821E3E76B3271BD7 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6F031EEEC1FE43EDAAD4C2A1CA137085 }}
