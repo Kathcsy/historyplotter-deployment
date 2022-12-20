@@ -94,6 +94,9 @@ DATABASES = {
         'PASSWORD': 'HistoryPlotter1234',
         'HOST': 'historyplotter.mysql.database.azure.com',
         'PORT': '3306',
+        'OPTIONS':{
+            'ssl':{'ca': 'BaltimoreCyberTrustRoot.crt.pem'}
+        }
     }
 }
 
