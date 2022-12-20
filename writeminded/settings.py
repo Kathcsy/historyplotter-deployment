@@ -87,9 +87,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'historyplotter',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        #'USER': 'root',
+        #'PASSWORD': '',
+        #'HOST': 'localhost',
+        'USER': 'writeminded@historyplotter',
+        'PASSWORD': 'HistoryPlotter1234',
+        'HOST': 'historyplotter.mysql.database.azure.com',
         'PORT': '3306',
     }
 }
