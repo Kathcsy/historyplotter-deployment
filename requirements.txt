@@ -1,5 +1,5 @@
 asgiref==3.5.2
-pymsql
+pymsql==1.0.2
 backports.entry-points-selectable==1.1.0
 certifi==2021.5.30
 charset-normalizer==2.0.4
